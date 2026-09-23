@@ -25,6 +25,23 @@ const isOrdenacao = (value: string | undefined): value is OrdenacaoVeiculo =>
   value === "valor" ||
   value === "km";
 
+export const homeGridMatchesBaseEstoque = (
+  params: ListMotosParams,
+  baseOrder: OrdenacaoVeiculo,
+): boolean => {
+  const hasFilter =
+    Boolean(params.busca?.trim()) ||
+    Boolean(params.marca?.trim()) ||
+    Boolean(params.modelo?.trim()) ||
+    params.anoMin !== undefined ||
+    params.anoMax !== undefined ||
+    params.valorMin !== undefined ||
+    params.valorMax !== undefined ||
+    params.kmMax !== undefined;
+  const order = params.ordenar ?? baseOrder;
+  return !hasFilter && order === baseOrder && params.situacao === "estoque";
+};
+
 export const parseEstoqueParams = (
   query: QueryValueMap,
   situacao: ListMotosParams["situacao"],

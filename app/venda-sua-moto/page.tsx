@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { FC } from "react";
+import { ConsignacaoVideo } from "@/components/ConsignacaoVideo";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { PageShell } from "@/components/PageShell";
 import { copy } from "@/lib/copy";
@@ -7,20 +8,49 @@ import { buildWhatsAppHrefPlain } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: copy.venda.title,
+  description: copy.venda.metaDescription,
+  openGraph: {
+    title: copy.venda.title,
+    description: copy.venda.metaDescription,
+  },
 };
 
 const VendaSuaMotoPage: FC = () => {
-  const href = buildWhatsAppHrefPlain(
-    `Olá! ${copy.whatsappVenda}. Quero avaliar uma moto com vocês.`,
-  );
+  const href = buildWhatsAppHrefPlain(copy.venda.whatsappPrefill);
 
   return (
     <PageShell>
-      <div className="mx-auto flex max-w-prose flex-col gap-4">
-        <h1 className="text-display font-bold text-foreground">{copy.venda.title}</h1>
-        <p className="text-moss">{copy.venda.body}</p>
-        <WhatsAppButton href={href} label={copy.whatsappVenda} />
-      </div>
+      <article className="mx-auto flex max-w-prose flex-col gap-8">
+        <header className="flex flex-col gap-4">
+          <h1 className="text-display font-bold text-foreground">{copy.venda.title}</h1>
+          <p className="text-lg font-medium leading-relaxed text-foreground">{copy.venda.lead}</p>
+        </header>
+
+        <section className="flex flex-col gap-3" aria-labelledby="venda-video-heading">
+          <h2 id="venda-video-heading" className="text-lg font-bold text-foreground">
+            {copy.venda.videoHeading}
+          </h2>
+          <ConsignacaoVideo
+            ariaLabel={copy.venda.videoAria}
+            fallbackText={copy.venda.videoFallback}
+          />
+          <p className="text-sm text-moss">{copy.venda.videoDataHint}</p>
+        </section>
+
+        <div className="flex flex-col gap-8">
+          {copy.venda.sections.map((section) => (
+            <section key={section.title} className="flex flex-col gap-2">
+              <h2 className="text-lg font-bold text-foreground">{section.title}</h2>
+              <p className="leading-relaxed text-moss">{section.body}</p>
+            </section>
+          ))}
+        </div>
+
+        <footer className="flex flex-col gap-6 border-t border-stone pt-6">
+          <p className="leading-relaxed text-moss">{copy.venda.closing}</p>
+          <WhatsAppButton href={href} label={copy.whatsappVenda} />
+        </footer>
+      </article>
     </PageShell>
   );
 };

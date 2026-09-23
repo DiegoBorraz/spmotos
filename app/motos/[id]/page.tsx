@@ -77,7 +77,7 @@ const MotoDetailPage: FC<MotoDetailPageProps> = async ({ params }) => {
               <p className="max-w-prose text-moss">{moto.observacoes}</p>
             </section>
           ) : null}
-          <div className="static pt-2 lg:sticky lg:bottom-4 lg:pt-0">
+          <div className="pt-2">
             <WhatsAppButton href={whatsappHref} label={copy.whatsapp} />
           </div>
         </div>

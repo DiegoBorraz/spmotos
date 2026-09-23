@@ -1,6 +1,6 @@
-import { ListMotosParams, PublicMoto } from "@/lib/clickgarage/types";
+import { OrdenacaoVeiculo, PublicMoto } from "@/lib/clickgarage/types";
 
-export const HOME_RECENT_ORDER: ListMotosParams["ordenar"] = "atualizacao";
+export const HOME_RECENT_ORDER: OrdenacaoVeiculo = "atualizacao";
 
 /** First moto with a photo for the banner; otherwise the newest in the list. */
 export const pickHeroMoto = (motosRecentes: PublicMoto[]): PublicMoto | null => {

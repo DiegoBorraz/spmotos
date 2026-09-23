@@ -8,9 +8,12 @@ interface HomeHeroProps {
 }
 
 const HeroChip: React.FC<{ label: string }> = ({ label }) => (
-  <li className="flex items-center gap-2 text-sm text-chrome-foreground/90 lg:justify-end">
-    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-    {label}
+  <li className="grid grid-cols-[0.375rem_1fr] items-start gap-x-2.5 text-sm text-chrome-foreground/90">
+    <span
+      className="mt-[0.4375rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+      aria-hidden="true"
+    />
+    <span className="min-w-0 text-pretty">{label}</span>
   </li>
 );
 
@@ -30,6 +33,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ heroMoto }) => (
           {copy.home.heroKicker}
           <span className="h-px w-8 bg-accent" aria-hidden="true" />
         </p>
+        <p className="text-xs text-chrome-muted">{copy.contato.hours}</p>
         <h1 className="text-display font-bold tracking-tight">
           {copy.home.heroTitleLead}{" "}
           <span className="text-accent">{copy.home.heroTitleAccent}</span>
@@ -46,7 +50,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ heroMoto }) => (
         </div>
       </div>
 
-      <div className="relative mx-auto aspect-[16/10] w-full max-w-lg lg:col-span-5 lg:mx-0 lg:max-w-none lg:aspect-[5/3] xl:col-span-5">
+      <div className="relative order-3 mx-auto aspect-[16/10] w-full max-w-lg lg:order-none lg:col-span-5 lg:mx-0 lg:max-w-none lg:aspect-[5/3] xl:col-span-5">
         {heroMoto?.imagemPrincipal ? (
           <Image
             src={heroMoto.imagemPrincipal}
@@ -63,10 +67,9 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ heroMoto }) => (
         )}
       </div>
 
-      <ul className="flex flex-col gap-3 lg:col-span-3 lg:items-end lg:text-right xl:col-span-3">
+      <ul className="order-2 flex w-full max-w-[17.5rem] flex-col gap-3 lg:order-none lg:col-span-3 lg:ml-auto xl:col-span-3">
         <HeroChip label={copy.home.heroChip1} />
         <HeroChip label={copy.home.heroChip2} />
-        <HeroChip label={copy.home.heroChip3} />
       </ul>
     </div>
   </section>

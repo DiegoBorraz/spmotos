@@ -23,9 +23,12 @@ export const getMotoById = async (id: number): Promise<PublicMoto | null> => {
   return veiculo ? toPublicMoto(veiculo) : null;
 };
 
-export const listMarcas = async (): Promise<string[]> => {
-  const motos = await listMotos({ situacao: "estoque" });
-  return [...new Set(motos.map((moto) => moto.marca))].sort((left, right) =>
+export const marcasFromMotos = (motos: PublicMoto[]): string[] =>
+  [...new Set(motos.map((moto) => moto.marca))].sort((left, right) =>
     left.localeCompare(right, "pt-BR"),
   );
+
+export const listMarcas = async (): Promise<string[]> => {
+  const motos = await listMotos({ situacao: "estoque" });
+  return marcasFromMotos(motos);
 };

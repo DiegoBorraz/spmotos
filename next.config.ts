@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /** Celular na rede local / 127.0.0.1: sem isso o dev bloqueia JS client e o menu não abre. */
+  allowedDevOrigins: ["127.0.0.1", "192.168.8.142"],
   async redirects() {
     return [
       {

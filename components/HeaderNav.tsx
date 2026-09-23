@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { brandAssets } from "@/lib/brand";
 import { copy } from "@/lib/copy";
 
@@ -14,7 +14,6 @@ interface NavLinkItem {
 
 const NAV_LINKS: NavLinkItem[] = [
   { href: "/", label: copy.nav.home },
-  { href: "/vendidas", label: copy.nav.vendidas },
   { href: "/venda-sua-moto", label: copy.nav.venda },
   { href: "/contato", label: copy.nav.contato },
 ];
@@ -39,19 +38,45 @@ const mobileLinkClassName = (active: boolean): string =>
 export const HeaderNav: React.FC = () => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileNavRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   return (
     <div className="flex w-full flex-col lg:w-auto lg:flex-1">
-      <div className="flex h-11 items-center justify-between gap-4 overflow-visible lg:h-auto lg:justify-start lg:gap-10">
+      <div className="relative flex h-11 items-center justify-between gap-4 lg:h-auto lg:justify-start lg:gap-10">
         <Link
           href="/"
-          className="relative flex h-11 max-w-[min(52vw,11rem)] shrink-0 items-center overflow-visible lg:h-auto lg:max-w-none"
+          className="relative z-0 flex h-11 max-w-[min(52vw,11rem)] shrink-0 items-center overflow-hidden lg:h-auto lg:max-w-none lg:overflow-visible"
           onClick={() => setOpen(false)}
         >
           <Image
             src={brandAssets.logo}
             alt={copy.brand}
-            className="logo-mark h-[4.375rem] w-auto max-h-none object-contain object-left sm:h-[4.75rem] lg:h-[4.625rem] lg:max-w-[12.5rem]"
+            className="h-[4.375rem] w-auto max-h-none object-contain object-left sm:h-[4.75rem] lg:h-[4.625rem] lg:max-w-[12.5rem]"
             priority
           />
         </Link>
@@ -70,8 +95,9 @@ export const HeaderNav: React.FC = () => {
           ))}
         </nav>
         <button
+          ref={menuButtonRef}
           type="button"
-          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md text-chrome-foreground hover:bg-chrome-border/30 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-chrome focus-visible:outline-none lg:hidden"
+          className="relative z-20 inline-flex min-h-[44px] min-w-[44px] shrink-0 touch-manipulation items-center justify-center rounded-md text-chrome-foreground hover:bg-chrome-border/30 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-chrome focus-visible:outline-none lg:hidden"
           aria-expanded={open}
           aria-controls="menu-mobile"
           aria-label={open ? copy.nav.menuClose : copy.nav.menuOpen}
@@ -89,7 +115,11 @@ export const HeaderNav: React.FC = () => {
         </button>
       </div>
       {open ? (
-        <nav id="menu-mobile" className="mt-2 flex flex-col gap-1 lg:hidden">
+        <nav
+          ref={mobileNavRef}
+          id="menu-mobile"
+          className="mt-2 flex flex-col gap-1 lg:hidden"
+        >
           {NAV_LINKS.map((item) => (
             <Link
               key={item.href}

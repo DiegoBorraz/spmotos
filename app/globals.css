@@ -4,6 +4,8 @@
 
 :root {
   color-scheme: dark;
+  /* Sticky: contact bar + logo row (~70px) + padding */
+  --site-header-offset: 7.75rem;
   --chrome: #0b0d0c;
   --chrome-foreground: #f4f4f4;
   --chrome-muted: #a8a8a8;
@@ -54,16 +56,19 @@
 html {
   --tw-ring-offset-color: var(--page);
   min-height: 100%;
+  scroll-padding-top: var(--site-header-offset);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --site-header-offset: 8.25rem;
+  }
 }
 
 body {
   background-color: var(--page);
   color: var(--page-foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
-}
-
-.logo-mark {
-  filter: brightness(0) invert(1);
 }
 
 @layer utilities {
@@ -88,5 +93,9 @@ body {
   .bg-accent-cta:hover,
   .bg-accent-cta:active {
     background-color: var(--accent-hover);
+  }
+
+  .scroll-mt-header {
+    scroll-margin-top: var(--site-header-offset);
   }
 }
