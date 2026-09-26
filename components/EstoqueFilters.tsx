@@ -50,7 +50,7 @@ export const EstoqueFilters: React.FC<EstoqueFiltersProps> = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto grid max-w-6xl grid-cols-1 gap-3 rounded-2xl border border-chrome-border bg-chrome px-4 py-4 shadow-lg sm:grid-cols-2 md:px-5 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end"
+      className="site-container grid grid-cols-1 gap-3 rounded-2xl border border-chrome-border bg-chrome py-4 shadow-lg sm:grid-cols-2 md:gap-4 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end 2xl:gap-5"
     >
       <div className="flex flex-col gap-1">
         <label htmlFor="filter-busca" className="text-xs font-medium text-chrome-muted">

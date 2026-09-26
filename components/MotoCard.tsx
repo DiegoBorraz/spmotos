@@ -2,11 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { copy } from "@/lib/copy";
 import { formatCilindrada, formatKm, formatPriceCompact } from "@/lib/format";
-import { PublicMoto } from "@/lib/clickgarage/types";
+import { PublicMotoListItem } from "@/lib/clickgarage/types";
 
 interface MotoCardProps {
-  moto: PublicMoto;
+  moto: PublicMotoListItem;
   detailHref: string;
+  priority?: boolean;
 }
 
 interface SpecIconProps {
@@ -42,7 +43,7 @@ const SpecIcon: React.FC<SpecIconProps> = ({ icon }) => {
   );
 };
 
-export const MotoCard: React.FC<MotoCardProps> = ({ moto, detailHref }) => {
+export const MotoCard: React.FC<MotoCardProps> = ({ moto, detailHref, priority = false }) => {
   const cilindrada = formatCilindrada(moto.motor);
   const badge = moto.km === 0 ? copy.card.badgeNew : copy.card.badgeUsed;
 
@@ -54,8 +55,9 @@ export const MotoCard: React.FC<MotoCardProps> = ({ moto, detailHref }) => {
             src={moto.imagemPrincipal}
             alt={moto.titulo}
             fill
+            priority={priority}
             className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 25vw, 20vw"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-moss">

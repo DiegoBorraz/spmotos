@@ -1,6 +1,6 @@
 # SP Motos — vitrine (cenário 1)
 
-Site estático de revenda: lista motos, mostra a ficha e manda para o WhatsApp da loja.
+Site estático de revenda: lista motos, mostra a ficha e oferece WhatsApp com Sandra ou Caroline.
 
 ## Rodar
 
@@ -9,15 +9,13 @@ npm install
 npm run dev
 ```
 
-Por padrão o estoque mock vem da [API Ninjas de motos](https://api-ninjas.com/api/motorcycles) (`STOCK_SOURCE=mock` e `API_NINJAS_KEY` no `.env.local`). Preço, km e fotos da vitrine continuam no overlay local — a Ninjas só envia ficha técnica.
-
-Para usar a API Click Garage, copie `.env.example` e defina:
+Estoque via JSON de integração Click Garage. Copie `.env.example` para `.env.local`:
 
 ```
-STOCK_SOURCE=api
-CLICKGARAGE_TOKEN=...
-WHATSAPP_E164=5551...
+CLICKGARAGE_FEED_URL=https://clickgarage.com.br/integracoes/site-integracao/json/sp-motos-1
 SITE_URL=http://localhost:3000
 ```
 
-As chaves (`API_NINJAS_KEY`, `CLICKGARAGE_TOKEN`) nunca vão para o navegador.
+Números de WhatsApp ficam em `lib/store-whatsapp.ts` (Sandra e Caroline).
+
+A URL do feed fica só no servidor (`.env.local`), nunca no navegador.

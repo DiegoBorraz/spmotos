@@ -76,7 +76,7 @@ export const HeaderNav: React.FC = () => {
           <Image
             src={brandAssets.logo}
             alt={copy.brand}
-            className="h-[4.375rem] w-auto max-h-none object-contain object-left sm:h-[4.75rem] lg:h-[4.625rem] lg:max-w-[12.5rem]"
+            className="h-[4.375rem] w-auto max-h-none object-contain object-left sm:h-[4.75rem] lg:h-[4.625rem] lg:max-w-[12.5rem] 2xl:max-w-[14rem]"
             priority
           />
         </Link>

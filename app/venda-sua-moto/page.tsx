@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import type { FC } from "react";
 import { ConsignacaoVideo } from "@/components/ConsignacaoVideo";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { WhatsAppContactButtons } from "@/components/WhatsAppContactButtons";
 import { PageShell } from "@/components/PageShell";
 import { copy } from "@/lib/copy";
-import { buildWhatsAppHrefPlain } from "@/lib/whatsapp";
+import { buildWhatsAppHrefPlainLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: copy.venda.title,
@@ -16,18 +16,18 @@ export const metadata: Metadata = {
 };
 
 const VendaSuaMotoPage: FC = () => {
-  const href = buildWhatsAppHrefPlain(copy.venda.whatsappPrefill);
+  const whatsappLinks = buildWhatsAppHrefPlainLinks(copy.venda.whatsappPrefill);
 
   return (
-    <PageShell>
-      <article className="mx-auto flex max-w-prose flex-col gap-8">
+    <PageShell width="prose">
+      <article className="flex w-full min-w-0 flex-col gap-8">
         <header className="flex flex-col gap-4">
           <h1 className="text-display font-bold text-foreground">{copy.venda.title}</h1>
           <p className="text-lg font-medium leading-relaxed text-foreground">{copy.venda.lead}</p>
         </header>
 
         <section className="flex flex-col gap-3" aria-labelledby="venda-video-heading">
-          <h2 id="venda-video-heading" className="text-lg font-bold text-foreground">
+          <h2 id="venda-video-heading" className="text-section-title text-foreground">
             {copy.venda.videoHeading}
           </h2>
           <ConsignacaoVideo
@@ -40,7 +40,7 @@ const VendaSuaMotoPage: FC = () => {
         <div className="flex flex-col gap-8">
           {copy.venda.sections.map((section) => (
             <section key={section.title} className="flex flex-col gap-2">
-              <h2 className="text-lg font-bold text-foreground">{section.title}</h2>
+              <h2 className="text-section-title text-foreground">{section.title}</h2>
               <p className="leading-relaxed text-moss">{section.body}</p>
             </section>
           ))}
@@ -48,7 +48,7 @@ const VendaSuaMotoPage: FC = () => {
 
         <footer className="flex flex-col gap-6 border-t border-stone pt-6">
           <p className="leading-relaxed text-moss">{copy.venda.closing}</p>
-          <WhatsAppButton href={href} label={copy.whatsappVenda} />
+          <WhatsAppContactButtons links={whatsappLinks} action="sell" />
         </footer>
       </article>
     </PageShell>

@@ -1,26 +1,26 @@
-import { listNinjasVeiculos, getNinjasVeiculoById } from "@/lib/apininjas/repository";
-import { getStockSource } from "@/lib/env";
-import { fetchVeiculoById, fetchVeiculos } from "./client";
-import { filterMockVeiculos } from "./filter-mock";
-import { toPublicMoto } from "./mapper";
-import { ListMotosParams, PublicMoto } from "./types";
+import { cache } from "react";
+import { filterPublicMotos } from "./filter-public";
+import { fetchSiteFeedItems } from "./site-feed/client";
+import { toPublicMoto } from "./site-feed/mapper";
+import { ESTOQUE_BATCH_SIZE } from "./constants";
+import { toPublicMotoListItem } from "./list-item";
+import { ListMotosParams, PublicMoto, PublicMotoListItem } from "./types";
+
+export { ESTOQUE_BATCH_SIZE };
+
+const loadAllPublicMotos = cache(async (): Promise<PublicMoto[]> => {
+  const items = await fetchSiteFeedItems();
+  return items.map(toPublicMoto);
+});
 
 export const listMotos = async (params: ListMotosParams): Promise<PublicMoto[]> => {
-  if (getStockSource() === "api") {
-    const veiculos = await fetchVeiculos(params);
-    return veiculos.map(toPublicMoto);
-  }
-  const veiculos = await listNinjasVeiculos();
-  return filterMockVeiculos(veiculos, params).map(toPublicMoto);
+  const all = await loadAllPublicMotos();
+  return filterPublicMotos(all, params);
 };
 
-export const getMotoById = async (id: number): Promise<PublicMoto | null> => {
-  if (getStockSource() === "api") {
-    const veiculo = await fetchVeiculoById(id);
-    return veiculo ? toPublicMoto(veiculo) : null;
-  }
-  const veiculo = await getNinjasVeiculoById(id);
-  return veiculo ? toPublicMoto(veiculo) : null;
+export const getMotoById = async (id: string): Promise<PublicMoto | null> => {
+  const all = await loadAllPublicMotos();
+  return all.find((moto) => moto.id === id) ?? null;
 };
 
 export const marcasFromMotos = (motos: PublicMoto[]): string[] =>
@@ -29,6 +29,21 @@ export const marcasFromMotos = (motos: PublicMoto[]): string[] =>
   );
 
 export const listMarcas = async (): Promise<string[]> => {
-  const motos = await listMotos({ situacao: "estoque" });
+  const motos = await listMotos({});
   return marcasFromMotos(motos);
+};
+
+export interface ListMotosBatchResult {
+  items: PublicMotoListItem[];
+  total: number;
+}
+
+export const listMotosBatch = async (
+  params: ListMotosParams,
+  offset: number,
+  limit: number,
+): Promise<ListMotosBatchResult> => {
+  const filtered = await listMotos(params);
+  const items = filtered.slice(offset, offset + limit).map(toPublicMotoListItem);
+  return { items, total: filtered.length };
 };

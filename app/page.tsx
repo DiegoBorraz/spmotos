@@ -1,20 +1,27 @@
 import type { Metadata } from "next";
 import type { FC } from "react";
-import Link from "next/link";
+import { Suspense } from "react";
 import { EmptyState } from "@/components/EmptyState";
 import { EstoqueFilters } from "@/components/EstoqueFilters";
+import { HomeEstoqueGrid } from "@/components/HomeEstoqueGrid";
 import { HomeHero } from "@/components/HomeHero";
 import { HomeTrustStrip } from "@/components/HomeTrustStrip";
-import { MotoGrid } from "@/components/MotoGrid";
-import { marcasFromMotos, listMotos } from "@/lib/clickgarage/repository";
-import { copy } from "@/lib/copy";
+import { MotoDetailMissingModal, MotoDetailModal } from "@/components/MotoDetailModal";
 import {
-  homeGridMatchesBaseEstoque,
-  parseEstoqueParams,
-  QueryValueMap,
-} from "@/lib/estoque-query";
-import { HOME_RECENT_ORDER, pickHeroMoto } from "@/lib/home-hero";
-import { buildWhatsAppHrefPlain } from "@/lib/whatsapp";
+  ESTOQUE_BATCH_SIZE,
+  getMotoById,
+  listMotos,
+  listMotosBatch,
+  marcasFromMotos,
+} from "@/lib/clickgarage/repository";
+import { copy } from "@/lib/copy";
+import { parseEstoqueParams, parseMotoDetailId, QueryValueMap } from "@/lib/estoque-query";
+import { HOME_RECENT_ORDER } from "@/lib/home-hero";
+import {
+  buildWhatsAppHrefForMotoLinks,
+  buildWhatsAppHrefPlainLinks,
+  motoPageUrl,
+} from "@/lib/whatsapp";
 
 export const revalidate = 300;
 
@@ -29,84 +36,76 @@ interface HomePageProps {
 
 const HomePage: FC<HomePageProps> = async ({ searchParams }) => {
   const query = await searchParams;
-  const params = parseEstoqueParams(query, "estoque");
+  const params = parseEstoqueParams(query);
   const listParams = {
     ...params,
     ordenar: params.ordenar ?? HOME_RECENT_ORDER,
   };
 
-  const baseEstoqueParams = {
-    situacao: "estoque" as const,
-    ordenar: HOME_RECENT_ORDER,
-  };
-  const estoqueBase = await listMotos(baseEstoqueParams);
-  const motos = homeGridMatchesBaseEstoque(listParams, HOME_RECENT_ORDER)
-    ? estoqueBase
-    : await listMotos(listParams);
+  const estoqueBase = await listMotos({ ordenar: HOME_RECENT_ORDER });
+  const { items: initialItems, total } = await listMotosBatch(
+    listParams,
+    0,
+    ESTOQUE_BATCH_SIZE,
+  );
 
-  const whatsappHref = buildWhatsAppHrefPlain(`Olá! Quero falar com a ${copy.brand}.`);
-  const heroMoto = pickHeroMoto(estoqueBase);
+  const whatsappLinks = buildWhatsAppHrefPlainLinks(`Olá! Quero falar com a ${copy.brand}.`);
   const marcas = marcasFromMotos(estoqueBase);
-  const featured = motos.slice(0, 4);
-  const rest = motos.slice(4);
 
   const busca = params.busca ?? "";
   const marca = params.marca ?? "";
   const valorMax = params.valorMax !== undefined ? String(params.valorMax) : "";
 
+  const motoId = parseMotoDetailId(query);
+  const detailMoto = motoId ? await getMotoById(motoId) : null;
+  const detailWhatsappLinks =
+    detailMoto !== null
+      ? buildWhatsAppHrefForMotoLinks(detailMoto, motoPageUrl(detailMoto.id))
+      : [];
+
   return (
     <>
-      <HomeHero heroMoto={heroMoto} />
-      <div className="relative z-10 mt-4 px-4 md:-mt-8 md:px-6">
+      <HomeHero />
+      <div className="relative z-10 mt-4 md:-mt-8">
         <EstoqueFilters marcas={marcas} busca={busca} marca={marca} valorMax={valorMax} />
       </div>
       <div className="bg-page">
-        {motos.length === 0 ? (
-          <section className="px-4 py-10 md:px-6">
-            <EmptyState whatsappHref={whatsappHref} />
+        {total === 0 ? (
+          <section className="py-10 md:py-12">
+            <div className="site-container">
+              <EmptyState whatsappLinks={whatsappLinks} />
+            </div>
           </section>
         ) : (
-          <>
-            {featured.length > 0 ? (
-              <section id="estoque" className="scroll-mt-header px-4 py-10 md:px-6 md:py-12">
-                <div className="mx-auto flex max-w-6xl flex-col gap-6">
-                  <div className="flex flex-wrap items-end justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <span className="h-8 w-1 rounded-full bg-accent" aria-hidden="true" />
-                      <h2 className="text-xl font-bold text-page-foreground md:text-2xl">
-                        {copy.home.highlights}
-                      </h2>
-                    </div>
-                    {rest.length > 0 ? (
-                      <Link
-                        href="#estoque-completo"
-                        className="text-sm font-semibold text-moss hover:text-page-foreground"
-                      >
-                        {copy.home.seeAll}
-                      </Link>
-                    ) : null}
-                  </div>
-                  <MotoGrid motos={featured} />
-                </div>
-              </section>
-            ) : null}
-            {rest.length > 0 ? (
-              <section
-                id="estoque-completo"
-                className="scroll-mt-header px-4 pb-12 md:px-6 md:pb-16"
-              >
-                <div className="mx-auto flex max-w-6xl flex-col gap-6">
-                  <h2 className="text-xl font-bold text-page-foreground md:text-2xl">
-                    {copy.home.all}
-                  </h2>
-                  <MotoGrid motos={rest} />
-                </div>
-              </section>
-            ) : null}
-          </>
+          <section id="estoque" className="scroll-mt-header py-10 md:py-12 2xl:py-14">
+            <div className="site-container flex flex-col gap-6 2xl:gap-8">
+              <div className="flex items-center gap-3">
+                <span className="h-8 w-1 rounded-full bg-accent" aria-hidden="true" />
+                <h2 className="text-section-title text-page-foreground">
+                  {copy.home.estoqueTitle}
+                </h2>
+              </div>
+              <HomeEstoqueGrid
+                key={JSON.stringify(listParams)}
+                initialItems={initialItems}
+                total={total}
+                listParams={listParams}
+              />
+            </div>
+          </section>
         )}
         <HomeTrustStrip />
       </div>
+      {motoId && detailMoto ? (
+        <Suspense fallback={null}>
+          <MotoDetailModal moto={detailMoto} whatsappLinks={detailWhatsappLinks} />
+        </Suspense>
+      ) : null}
+      {motoId && !detailMoto ? (
+        <Suspense fallback={null}>
+          <MotoDetailMissingModal motoId={motoId} />
+        </Suspense>
+      ) : null}
     </>
   );
 };

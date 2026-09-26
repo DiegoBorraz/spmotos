@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/vendidas",
+        destination: "/",
+        permanent: true,
+      },
     ];
   },
   images: {
@@ -20,12 +25,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "carimagesapi.com",
-        pathname: "/image",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.carimagesapi.com",
+        hostname: "clickgarage-prod.s3.us-west-1.amazonaws.com",
       },
     ],
   },

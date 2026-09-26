@@ -7,7 +7,6 @@ export const copy = {
   },
   nav: {
     home: "Início",
-    vendidas: "Vendidas",
     venda: "Venda sua moto",
     contato: "Contato",
     menu: "Menu principal",
@@ -16,6 +15,14 @@ export const copy = {
   },
   whatsapp: "Negociar no WhatsApp",
   whatsappVenda: "Quero vender minha moto",
+  whatsappChooseContact: "Escolha com quem conversar:",
+  whatsappNegotiateWith: (name: string): string => `Negociar com ${name}`,
+  whatsappSellWith: (name: string): string => `Quero vender minha moto — ${name}`,
+  whatsappAriaNegotiate: (name: string, phone: string): string =>
+    `Negociar no WhatsApp com ${name}, ${phone}`,
+  whatsappAriaSell: (name: string, phone: string): string =>
+    `Quero vender minha moto no WhatsApp com ${name}, ${phone}`,
+  whatsappAriaHeader: (name: string, phone: string): string => `WhatsApp com ${name}, ${phone}`,
   searchPlaceholder: "Pesquisar marca, modelo ou nome",
   searchSubmit: "Buscar",
   card: {
@@ -55,11 +62,16 @@ export const copy = {
     heroBody:
       "Motos selecionadas, ficha completa e negociação direto no WhatsApp da loja. Fechamento presencial.",
     heroCta: "Ver estoque",
+    heroBannerAlt: "SP Motos — vitrine de motos em Pelotas",
     heroChip1: "Parcelamento nos cartões de crédito",
     heroChip2: "Financiamento com as melhores taxas do mercado",
-    highlights: "Motos em destaque",
-    seeAll: "Ver todas as motos",
-    all: "Estoque completo",
+    estoqueTitle: "Estoque",
+    loadMore: "Carregar mais motos",
+    loadingMore: "Carregando…",
+    allLoaded: "Você viu todas as motos deste filtro.",
+    loadMoreError: "Não foi possível carregar mais motos. Tente de novo.",
+    loadedBatch: (count: number): string =>
+      count === 1 ? "Mais 1 moto carregada." : `Mais ${count} motos carregadas.`,
   },
   trust: {
     item1Title: "Motos selecionadas",
@@ -67,11 +79,15 @@ export const copy = {
     item2Title: "Procedência",
     item2Body: "Informações de origem quando disponíveis na API.",
     item3Title: "WhatsApp da loja",
-    item3Body: "Um único canal para tirar dúvidas e negociar.",
+    item3Body: "Sandra ou Caroline — escolha com quem prefere falar.",
     item4Title: "Fechamento presencial",
     item4Body: "A conclusão da venda é feita na loja.",
   },
   detail: {
+    close: "Fechar detalhes da moto",
+    modalNotFound: "Esta moto não está mais no estoque.",
+    galleryPrev: "Foto anterior",
+    galleryNext: "Próxima foto",
     specs: "Ficha técnica",
     accessories: "Acessórios",
     notes: "Observações",
@@ -123,8 +139,7 @@ export const copy = {
       "Visite a loja ou fale com a equipe no WhatsApp. Confira o endereço, o horário de atendimento e trace a rota até a SP Motos.",
     address: "Avenida Domingos de Almeida, 3364 — Pelotas/RS",
     hours: "Segunda a sexta, 9h às 18h; sábado, 9h ao meio-dia",
-    phoneDisplay: "(53) 99712-5504",
-    phoneHint: "Atendimento pelo WhatsApp da loja",
+    phoneHint: "WhatsApp — Sandra ou Caroline",
     mapHeading: "Onde estamos",
     mapIframeTitle: "Mapa da SP Motos em Pelotas",
     openMapLabel: "Abrir mapa em tela cheia",
@@ -137,10 +152,6 @@ export const copy = {
       "Não foi possível usar sua localização. Ative a permissão no navegador ou use Google Maps ou Waze.",
     geolocationUnavailable:
       "Localização indisponível neste dispositivo. Use Google Maps ou Waze para traçar a rota.",
-  },
-  vendidas: {
-    title: "Motos vendidas",
-    body: "Histórico simples do que já saiu. Sem depoimento de cliente nesta versão.",
   },
   kmLabel: "km",
   footer: "Liberdade em 2 rodas.",

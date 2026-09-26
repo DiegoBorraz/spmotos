@@ -1,13 +1,18 @@
-import { getSiteUrl, getWhatsAppE164 } from "@/lib/env";
-import { formatPrice } from "@/lib/format";
 import { PublicMoto } from "@/lib/clickgarage/types";
+import { getSiteUrl } from "@/lib/env";
+import { formatPrice } from "@/lib/format";
+import { buildContactLinksForText, WhatsAppContactLink } from "@/lib/store-whatsapp";
 
-export const buildWhatsAppHref = (moto: PublicMoto, pageUrl: string): string => {
-  const text = `Olá! Tenho interesse na ${moto.titulo} — ${formatPrice(moto.valorAnunciado)}. ${pageUrl}`;
-  return `https://wa.me/${getWhatsAppE164()}?text=${encodeURIComponent(text)}`;
-};
+export const motoPageUrl = (id: string): string =>
+  `${getSiteUrl()}/motos/${encodeURIComponent(id)}`;
 
-export const buildWhatsAppHrefPlain = (text: string): string =>
-  `https://wa.me/${getWhatsAppE164()}?text=${encodeURIComponent(text)}`;
+const buildMotoInterestText = (moto: PublicMoto, pageUrl: string): string =>
+  `Olá! Tenho interesse na ${moto.titulo} — ${formatPrice(moto.valorAnunciado)}. ${pageUrl}`;
 
-export const motoPageUrl = (id: number): string => `${getSiteUrl()}/motos/${id}`;
+export const buildWhatsAppHrefPlainLinks = (text: string): WhatsAppContactLink[] =>
+  buildContactLinksForText(text);
+
+export const buildWhatsAppHrefForMotoLinks = (
+  moto: PublicMoto,
+  pageUrl: string,
+): WhatsAppContactLink[] => buildContactLinksForText(buildMotoInterestText(moto, pageUrl));

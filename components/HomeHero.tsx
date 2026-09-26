@@ -1,11 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { brandAssets } from "@/lib/brand";
 import { copy } from "@/lib/copy";
-import { PublicMoto } from "@/lib/clickgarage/types";
-
-interface HomeHeroProps {
-  heroMoto: PublicMoto | null;
-}
 
 const HeroChip: React.FC<{ label: string }> = ({ label }) => (
   <li className="grid grid-cols-[0.375rem_1fr] items-start gap-x-2.5 text-sm text-chrome-foreground/90">
@@ -17,18 +13,27 @@ const HeroChip: React.FC<{ label: string }> = ({ label }) => (
   </li>
 );
 
-export const HomeHero: React.FC<HomeHeroProps> = ({ heroMoto }) => (
-  <section className="relative overflow-hidden bg-chrome text-chrome-foreground">
+export const HomeHero: React.FC = () => (
+  <section className="hero-banner relative isolate w-full overflow-hidden text-chrome-foreground">
+    <div className="absolute inset-0">
+      <Image
+        src={brandAssets.heroBanner}
+        alt={copy.home.heroBannerAlt}
+        fill
+        className="object-cover object-[var(--hero-banner-position)]"
+        sizes="100vw"
+        priority
+      />
+    </div>
+
+    <div className="pointer-events-none absolute inset-0 bg-chrome/55 max-md:bg-chrome/60" aria-hidden="true" />
     <div
-      className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_70%_50%,rgb(198_255_0_/_0.08),transparent_55%)]"
+      className="pointer-events-none absolute inset-0 bg-gradient-to-r from-chrome/90 via-chrome/50 to-chrome/15 max-md:from-chrome/92 max-md:via-chrome/65 max-md:to-chrome/25"
       aria-hidden="true"
     />
-    <div
-      className="pointer-events-none absolute inset-0 bg-gradient-to-r from-chrome from-30% via-transparent to-transparent lg:from-40%"
-      aria-hidden="true"
-    />
-    <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-10 md:px-6 md:py-12 lg:grid-cols-12 lg:items-center lg:gap-6 lg:py-14 xl:py-16">
-      <div className="flex flex-col gap-4 md:gap-5 lg:col-span-4 xl:col-span-4">
+
+    <div className="site-container relative z-10 pb-32 pt-8 md:pt-10 lg:pt-12 2xl:pb-36">
+      <div className="flex max-w-xl flex-col gap-4 text-left md:gap-5 2xl:max-w-2xl">
         <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.2em] text-chrome-muted uppercase">
           {copy.home.heroKicker}
           <span className="h-px w-8 bg-accent" aria-hidden="true" />
@@ -48,29 +53,11 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ heroMoto }) => (
             <span aria-hidden="true">→</span>
           </Link>
         </div>
+        <ul className="flex max-w-md flex-col gap-3 pt-1">
+          <HeroChip label={copy.home.heroChip1} />
+          <HeroChip label={copy.home.heroChip2} />
+        </ul>
       </div>
-
-      <div className="relative order-3 mx-auto aspect-[16/10] w-full max-w-lg lg:order-none lg:col-span-5 lg:mx-0 lg:max-w-none lg:aspect-[5/3] xl:col-span-5">
-        {heroMoto?.imagemPrincipal ? (
-          <Image
-            src={heroMoto.imagemPrincipal}
-            alt={heroMoto.titulo}
-            fill
-            className="object-contain object-center drop-shadow-[0_24px_48px_rgb(0_0_0_/_0.45)]"
-            sizes="(max-width: 1024px) 90vw, 520px"
-            priority
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center rounded-xl border border-dashed border-chrome-border text-sm text-chrome-muted">
-            {copy.card.noPhoto}
-          </div>
-        )}
-      </div>
-
-      <ul className="order-2 flex w-full max-w-[17.5rem] flex-col gap-3 lg:order-none lg:col-span-3 lg:ml-auto xl:col-span-3">
-        <HeroChip label={copy.home.heroChip1} />
-        <HeroChip label={copy.home.heroChip2} />
-      </ul>
     </div>
   </section>
 );

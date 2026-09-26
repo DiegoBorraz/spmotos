@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "logo:webp": "node scripts/build-logo-webp.mjs"
+    "logo:webp": "node scripts/build-logo-webp.mjs",
+    "banner:webp": "node scripts/build-banner-webp.mjs",
+    "validate:feed": "node --experimental-strip-types scripts/validate-site-feed.ts exemplo.json"
   },
   "dependencies": {
     "next": "16.3.5",

@@ -1,8 +1,9 @@
 import { copy } from "@/lib/copy";
 import { buildGoogleMapsPlaceUrl } from "@/lib/store-location";
+import { WhatsAppContactLink } from "@/lib/store-whatsapp";
 
 interface ContatoInfoCardProps {
-  whatsappHref: string;
+  whatsappLinks: WhatsAppContactLink[];
 }
 
 const PinIcon: React.FC = () => (
@@ -29,7 +30,7 @@ const WhatsAppIcon: React.FC = () => (
   </svg>
 );
 
-export const ContatoInfoCard: React.FC<ContatoInfoCardProps> = ({ whatsappHref }) => {
+export const ContatoInfoCard: React.FC<ContatoInfoCardProps> = ({ whatsappLinks }) => {
   const mapsPlaceUrl = buildGoogleMapsPlaceUrl();
 
   return (
@@ -40,7 +41,7 @@ export const ContatoInfoCard: React.FC<ContatoInfoCardProps> = ({ whatsappHref }
           href={mapsPlaceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-foreground underline-offset-2 hover:underline"
+          className="break-words text-foreground underline-offset-2 hover:underline"
         >
           {copy.contato.address}
         </a>
@@ -51,18 +52,25 @@ export const ContatoInfoCard: React.FC<ContatoInfoCardProps> = ({ whatsappHref }
       </div>
       <div className="flex gap-3">
         <WhatsAppIcon />
-        <p className="text-moss">
-          {copy.contato.phoneHint}
-          {": "}
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-foreground underline-offset-2 hover:underline"
-          >
-            {copy.contato.phoneDisplay}
-          </a>
-        </p>
+        <div className="flex min-w-0 flex-col gap-2">
+          <p className="text-moss">{copy.contato.phoneHint}</p>
+          <ul className="flex flex-col gap-2">
+            {whatsappLinks.map(({ contact, href }) => (
+              <li key={contact.id}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={copy.whatsappAriaHeader(contact.name, contact.displayPhone)}
+                  className="break-words font-semibold text-foreground underline-offset-2 hover:underline"
+                >
+                  {contact.name}
+                  <span className="font-normal text-moss">{` — ${contact.displayPhone}`}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

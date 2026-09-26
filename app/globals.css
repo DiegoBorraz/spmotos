@@ -26,6 +26,11 @@
   --blue: #5a8fad;
   --price-shadow: none;
   --focus-ring: var(--accent);
+  --hero-banner-position: 62% 38%;
+  --hero-min-height: clamp(16rem, 38vw, 28rem);
+  --site-container-max: clamp(72rem, 88vw, 96rem);
+  --site-gutter: clamp(1rem, 2.5vw, 2.5rem);
+  --page-py: clamp(1rem, 3vw, 2.5rem);
 }
 
 @theme inline {
@@ -56,12 +61,20 @@
 html {
   --tw-ring-offset-color: var(--page);
   min-height: 100%;
+  overflow-x: clip;
   scroll-padding-top: var(--site-header-offset);
 }
 
 @media (min-width: 1024px) {
   :root {
     --site-header-offset: 8.25rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --hero-min-height: clamp(18rem, 32vw, 36rem);
+    --site-container-max: clamp(76rem, 90vw, 100rem);
   }
 }
 
@@ -72,14 +85,27 @@ body {
 }
 
 @layer utilities {
+  .site-container {
+    width: 100%;
+    max-width: var(--site-container-max);
+    margin-inline: auto;
+    padding-inline: var(--site-gutter);
+  }
+
   .text-display {
-    font-size: clamp(1.75rem, 1.35rem + 2vw, 3rem);
+    font-size: clamp(1.75rem, 1.25rem + 2.2vw, 3.375rem);
     line-height: 1.1;
     letter-spacing: -0.02em;
   }
 
+  .text-section-title {
+    font-size: clamp(1.25rem, 1.1rem + 0.35vw, 1.75rem);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
   .text-price-fluid {
-    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
     line-height: 1.2;
     font-weight: 700;
     text-shadow: var(--price-shadow);
@@ -97,5 +123,9 @@ body {
 
   .scroll-mt-header {
     scroll-margin-top: var(--site-header-offset);
+  }
+
+  .hero-banner {
+    min-height: var(--hero-min-height);
   }
 }

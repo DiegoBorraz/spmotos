@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { WhatsAppContactButtons } from "@/components/WhatsAppContactButtons";
 import { copy } from "@/lib/copy";
+import { WhatsAppContactLink } from "@/lib/store-whatsapp";
 
 interface HeaderContactBarProps {
-  whatsappHref: string;
+  whatsappLinks: WhatsAppContactLink[];
 }
 
 const PinIcon: React.FC = () => (
@@ -29,9 +31,9 @@ const WhatsAppIcon: React.FC = () => (
   </svg>
 );
 
-export const HeaderContactBar: React.FC<HeaderContactBarProps> = ({ whatsappHref }) => (
+export const HeaderContactBar: React.FC<HeaderContactBarProps> = ({ whatsappLinks }) => (
   <div className="border-b border-chrome-border/60 bg-chrome">
-    <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-4 gap-y-1 px-4 py-1.5 text-xs text-chrome-muted md:justify-end md:gap-x-5 lg:px-6">
+    <div className="site-container flex flex-wrap items-center justify-center gap-x-4 gap-y-1 py-1.5 text-xs text-chrome-muted md:justify-end md:gap-x-5">
       <Link
         href="/contato"
         className="inline-flex min-h-[44px] max-w-full items-center gap-1.5 hover:text-accent focus-visible:text-accent focus-visible:outline-none lg:min-h-0"
@@ -45,15 +47,10 @@ export const HeaderContactBar: React.FC<HeaderContactBarProps> = ({ whatsappHref
         {copy.contato.hours}
       </span>
       <span className="hidden h-3 w-px bg-chrome-border sm:block" aria-hidden="true" />
-      <a
-        href={whatsappHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex min-h-[44px] items-center gap-1.5 font-semibold text-chrome-foreground hover:text-accent focus-visible:text-accent focus-visible:outline-none lg:min-h-0"
-      >
+      <span className="inline-flex min-h-[44px] items-center gap-1.5 lg:min-h-0">
         <WhatsAppIcon />
-        {copy.contato.phoneDisplay}
-      </a>
+        <WhatsAppContactButtons links={whatsappLinks} action="negotiate" layout="inline" />
+      </span>
     </div>
   </div>
 );

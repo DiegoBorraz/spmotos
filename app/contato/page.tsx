@@ -3,10 +3,10 @@ import type { FC } from "react";
 import { ContatoDirections } from "@/components/ContatoDirections";
 import { ContatoInfoCard } from "@/components/ContatoInfoCard";
 import { StoreMapEmbed } from "@/components/StoreMapEmbed";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { WhatsAppContactButtons } from "@/components/WhatsAppContactButtons";
 import { PageShell } from "@/components/PageShell";
 import { copy } from "@/lib/copy";
-import { buildWhatsAppHrefPlain } from "@/lib/whatsapp";
+import { buildWhatsAppHrefPlainLinks } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: copy.contato.title,
@@ -18,24 +18,24 @@ export const metadata: Metadata = {
 };
 
 const ContatoPage: FC = () => {
-  const href = buildWhatsAppHrefPlain(`Olá! Quero falar com a ${copy.brand}.`);
+  const whatsappLinks = buildWhatsAppHrefPlainLinks(`Olá! Quero falar com a ${copy.brand}.`);
 
   return (
     <PageShell>
-      <article className="mx-auto flex max-w-6xl flex-col gap-8">
+      <article className="flex w-full min-w-0 flex-col gap-8 2xl:gap-10">
         <header className="flex max-w-prose flex-col gap-3">
           <h1 className="text-display font-bold text-foreground">{copy.contato.title}</h1>
           <p className="leading-relaxed text-moss">{copy.contato.intro}</p>
         </header>
 
-        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10">
-          <div className="flex flex-col gap-8">
-            <ContatoInfoCard whatsappHref={href} />
+        <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start lg:gap-10 2xl:gap-14">
+          <div className="flex min-w-0 flex-col gap-8">
+            <ContatoInfoCard whatsappLinks={whatsappLinks} />
             <ContatoDirections />
           </div>
 
-          <section className="flex flex-col gap-3" aria-labelledby="contato-map-heading">
-            <h2 id="contato-map-heading" className="text-lg font-bold text-foreground">
+          <section className="flex min-w-0 flex-col gap-3" aria-labelledby="contato-map-heading">
+            <h2 id="contato-map-heading" className="text-section-title text-foreground">
               {copy.contato.mapHeading}
             </h2>
             <StoreMapEmbed />
@@ -43,7 +43,7 @@ const ContatoPage: FC = () => {
         </div>
 
         <footer className="border-t border-stone pt-6">
-          <WhatsAppButton href={href} label={copy.whatsapp} />
+          <WhatsAppContactButtons links={whatsappLinks} action="negotiate" />
         </footer>
       </article>
     </PageShell>
