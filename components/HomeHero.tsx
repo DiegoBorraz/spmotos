@@ -4,9 +4,9 @@ import { brandAssets } from "@/lib/brand";
 import { copy } from "@/lib/copy";
 
 const HeroChip: React.FC<{ label: string }> = ({ label }) => (
-  <li className="grid grid-cols-[0.375rem_1fr] items-start gap-x-2.5 text-sm text-chrome-foreground/90">
+  <li className="grid grid-cols-[0.375rem_1fr] items-start gap-x-2.5 text-sm text-chrome-foreground/90 sm:grid-cols-[0.5rem_1fr] sm:gap-x-3 md:text-base lg:text-lg 2xl:text-xl">
     <span
-      className="mt-[0.4375rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+      className="mt-[0.4375rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent sm:mt-2 sm:h-2 sm:w-2 md:mt-2.5"
       aria-hidden="true"
     />
     <span className="min-w-0 text-pretty">{label}</span>
@@ -53,7 +53,7 @@ export const HomeHero: React.FC = () => (
             <span aria-hidden="true">→</span>
           </Link>
         </div>
-        <ul className="flex max-w-md flex-col gap-3 pt-1">
+        <ul className="flex max-w-md flex-col gap-3 pt-1 md:max-w-lg md:gap-3.5 lg:max-w-xl lg:gap-4 2xl:max-w-2xl">
           <HeroChip label={copy.home.heroChip1} />
           <HeroChip label={copy.home.heroChip2} />
           <HeroChip label={copy.home.heroChip3} />
