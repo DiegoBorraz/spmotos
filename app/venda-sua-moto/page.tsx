@@ -26,6 +26,25 @@ const VendaSuaMotoPage: FC = () => {
           <p className="text-lg font-medium leading-relaxed text-foreground">{copy.venda.lead}</p>
         </header>
 
+        <section
+          className="flex flex-col gap-4 rounded-xl border border-stone bg-surface p-5 shadow-sm"
+          aria-labelledby="venda-services-heading"
+        >
+          <h2 id="venda-services-heading" className="text-section-title text-foreground">
+            {copy.venda.servicesHighlightTitle}
+          </h2>
+          <ul className="flex flex-col gap-2 text-pretty text-moss">
+            <li className="flex gap-2">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              {copy.venda.servicesHighlightConsorcio}
+            </li>
+            <li className="flex gap-2">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              {copy.venda.servicesHighlightFinanciamento}
+            </li>
+          </ul>
+        </section>
+
         <section className="flex flex-col gap-3" aria-labelledby="venda-video-heading">
           <h2 id="venda-video-heading" className="text-section-title text-foreground">
             {copy.venda.videoHeading}

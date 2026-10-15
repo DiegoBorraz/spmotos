@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { StoreSocialLinks } from "@/components/StoreSocialLinks";
 import { WhatsAppContactButtons } from "@/components/WhatsAppContactButtons";
 import { brandAssets } from "@/lib/brand";
 import { copy } from "@/lib/copy";
@@ -18,9 +19,12 @@ export const SiteFooter: React.FC<SiteFooterProps> = ({ whatsappLinks }) => (
             alt={copy.brand}
             className="h-12 w-auto object-contain object-left sm:h-14"
           />
-          <div className="flex flex-col gap-0.5 text-sm text-chrome-muted">
-            <p>{copy.contato.address}</p>
-            <p>{copy.footer}</p>
+          <div className="flex flex-col gap-3 text-sm text-chrome-muted">
+            <div className="flex flex-col gap-0.5">
+              <p>{copy.contato.address}</p>
+              <p>{copy.footer}</p>
+            </div>
+            <StoreSocialLinks surface="chrome" />
           </div>
         </div>
         <div className="w-full min-w-0 sm:max-w-md">

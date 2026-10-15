@@ -56,6 +56,8 @@ export const HomeHero: React.FC = () => (
         <ul className="flex max-w-md flex-col gap-3 pt-1">
           <HeroChip label={copy.home.heroChip1} />
           <HeroChip label={copy.home.heroChip2} />
+          <HeroChip label={copy.home.heroChip3} />
+          <HeroChip label={copy.home.heroChip4} />
         </ul>
       </div>
     </div>

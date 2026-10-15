@@ -23,6 +23,10 @@ export const copy = {
   whatsappAriaSell: (name: string, phone: string): string =>
     `Quero vender minha moto no WhatsApp com ${name}, ${phone}`,
   whatsappAriaHeader: (name: string, phone: string): string => `WhatsApp com ${name}, ${phone}`,
+  social: {
+    heading: "Redes sociais",
+    ariaFollow: (network: string): string => `SP Motos no ${network} (abre em nova aba)`,
+  },
   searchPlaceholder: "Pesquisar marca, modelo ou nome",
   searchSubmit: "Buscar",
   card: {
@@ -65,6 +69,8 @@ export const copy = {
     heroBannerAlt: "SP Motos — vitrine de motos em Pelotas",
     heroChip1: "Parcelamento nos cartões de crédito",
     heroChip2: "Financiamento com as melhores taxas do mercado",
+    heroChip3: "Consórcio de motos",
+    heroChip4: "Financiamento de moto que você encontrou particular",
     estoqueTitle: "Estoque",
     loadMore: "Carregar mais motos",
     loadingMore: "Carregando…",
@@ -109,6 +115,10 @@ export const copy = {
     videoAria: "Vídeo explicando a venda consignada na SP Motos",
     videoFallback: "Seu navegador não suporta a reprodução de vídeo.",
     videoDataHint: "O vídeo só é baixado quando você apertar play (útil em dados móveis).",
+    servicesHighlightTitle: "Também na SP Motos",
+    servicesHighlightConsorcio: "Consórcio de motos — planeje a compra com a nossa equipe.",
+    servicesHighlightFinanciamento:
+      "Financiamento de moto particular — achou a moto por conta própria? A gente ajuda a fechar o crédito.",
     sections: [
       {
         title: "A SP Motos cuida de tudo",

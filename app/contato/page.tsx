@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { FC } from "react";
 import { ContatoDirections } from "@/components/ContatoDirections";
+import { StoreSocialLinks } from "@/components/StoreSocialLinks";
 import { ContatoInfoCard } from "@/components/ContatoInfoCard";
 import { StoreMapEmbed } from "@/components/StoreMapEmbed";
 import { WhatsAppContactButtons } from "@/components/WhatsAppContactButtons";
@@ -31,6 +32,7 @@ const ContatoPage: FC = () => {
         <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start lg:gap-10 2xl:gap-14">
           <div className="flex min-w-0 flex-col gap-8">
             <ContatoInfoCard whatsappLinks={whatsappLinks} />
+            <StoreSocialLinks />
             <ContatoDirections />
           </div>
 
